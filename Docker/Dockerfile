@@ -2,62 +2,98 @@ FROM ros:noetic-ros-base-focal
 
 SHELL ["/bin/bash", "-c"]
 
-# set the ros version
+# Set the ROS version
 ENV ROS_DISTRO noetic
 
-# install some useful packages and upgrade existing ones
-RUN apt update && apt upgrade -y \
-    && apt install -y \
+# Upgrade existing ones
+RUN apt update && apt upgrade -y
+
+# Install packages
+RUN apt install -y \
     apt-utils \
     git \
     curl \
-    nano \
-    vim \
     tmux \
     x11-apps \
     python3-pip \
     python-is-python3
-    
-# Install Gazebo
-# RUN curl -sSL http://get.gazebosim.org | sh
 
-# install ros packages
-# see ../docs/installing_ros_packages.md for alternatives
+# Ouster ROS
+RUN apt install -y         \
+    build-essential         \
+    libeigen3-dev           \
+    libjsoncpp-dev          \
+    libspdlog-dev           \
+    libcurl4-openssl-dev    \
+    cmake
+
+# Ouster example
+# RUN apt-get update \
+#     && apt-get dist-upgrade -y \
+#     && apt-get install -y --no-install-recommends \
+#     git \
+#     build-essential \
+#     dialog \
+#     make \
+#     gcc \
+#     g++ \
+#     locales \
+#     wget \
+#     software-properties-common \
+#     sudo \
+#     libgl1-mesa-glx \
+#     libgl1-mesa-dri \
+#     libxau6 \
+#     libxdmcp6 \
+#     libxcb1 \
+#     libxext6 \
+#     libx11-6 \
+#     tmux \
+#     xdg-utils \
+#     eog
+
+# Install ROS packages
 RUN DEBIAN_FRONTEND=noninteractive apt install -y \
+    # ros-${ROS_DISTRO}-cartographer \
+    # ros-${ROS_DISTRO}-cartographer-ros \ 
+    # ros-${ROS_DISTRO}-cartographer-ros-msgs \
+    # ros-${ROS_DISTRO}-cartographer-rviz \
+    ros-${ROS_DISTRO}-controller-manager \
+    ros-${ROS_DISTRO}-gazebo-* \
+    ros-${ROS_DISTRO}-hector-gazebo-plugins \ 
+    ros-${ROS_DISTRO}-hector-gazebo \
+    ros-${ROS_DISTRO}-joint-state-controller \
+    ros-${ROS_DISTRO}-pcl-ros \
     ros-${ROS_DISTRO}-rviz \
+    ros-${ROS_DISTRO}-ros-control \
     ros-${ROS_DISTRO}-rqt-graph \
     ros-${ROS_DISTRO}-rqt-tf-tree \
     ros-${ROS_DISTRO}-warthog-desktop \
-    ros-${ROS_DISTRO}-gazebo-ros-pkgs \
-    ros-${ROS_DISTRO}-gazebo-ros-control \
-    && rm -rf /var/lib/apt/lists/*
+    ros-${ROS_DISTRO}-xacro   
+
+RUN rm -rf /var/lib/apt/lists/*
 
 RUN rosdep update
 
-# switch to home dir
+# Switch to home dir
 WORKDIR /root
 
-# setup .bashrc
+# Copy the .aliases_bashrc file into the image
+COPY .bash_aliases .bash_aliases
+
+# Setup .bashrc
 SHELL ["/bin/bash", "-l", "-c"]
-#   # set the bash prompt colors
 RUN sed -i 's/#force_color_prompt=yes/force_color_prompt=yes/' "/root/.bashrc" \
     && sed -i 's/01;32m/01;36m/g; s/01;34m/01;35m/g' "/root/.bashrc" \
-    # source ros setup.bash
+    # Source ROS setup.bash
     && echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.bashrc \
     && echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> ~/.profile \
-    && echo "source warthog_ws/devel/setup.bash" >> ~/.bashrc
-    # add a package to the ROS_PACKAGE_PATH
-    # echo "export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:/root/amrl_msgs" >> ~/.bashrc \
-    # && echo "export ROS_PACKAGE_PATH=\$ROS_PACKAGE_PATH:/root/amrl_msgs" >> ~/.profile
+    && echo "source /root/warthog_ws/devel/setup.bash" >> ~/.bashrc
 
-    
-# copy the entrypoint into the image
+# Copy the entrypoint into the image
 COPY ./entrypoint.sh /entrypoint.sh
-# run this script on startup
+# Run this script on startup
 ENTRYPOINT /entrypoint.sh
 
 # Start container in warthog_ws directory
 WORKDIR /root/warthog_ws
-
-# Install any missing dependencies
-RUN rosdep install --from-paths src --ignore-src --rosdistro=noetic -y
