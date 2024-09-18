@@ -62,7 +62,12 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y \
     ros-${ROS_DISTRO}-cpr-onav-description \
     ros-${ROS_DISTRO}-rqt-robot-monitor \
     ros-${ROS_DISTRO}-rqt-console \
-    ros-${ROS_DISTRO}-joint-state-publisher-gui 
+    ros-${ROS_DISTRO}-joint-state-publisher-gui
+
+RUN DEBIAN_FRONTEND=noninteractive apt install -y \
+    ros-${ROS_DISTRO}-slam-gmapping \
+    ros-${ROS_DISTRO}-pointcloud-to-laserscan \
+    ros-${ROS_DISTRO}-ira-laser-tools
 
 RUN rm -rf /var/lib/apt/lists/*
 
