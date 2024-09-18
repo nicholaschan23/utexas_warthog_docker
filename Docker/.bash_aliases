@@ -147,3 +147,9 @@ _hostnames()
 
 export WARTHOG_BULKHEAD=1
 alias rmwarthog="export localmaster(ROSMASTER=192.168.131.1)"
+
+runsim() {
+    source "$HOME/warthog_ws/devel/setup.bash"
+    roslaunch utexas_warthog_simulator warthog_gazebo.launch
+}
+

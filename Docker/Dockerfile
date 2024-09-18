@@ -8,6 +8,7 @@ ENV ROS_DISTRO noetic
 # Upgrade existing ones
 RUN apt update && apt upgrade -y
 
+# TODO: Clean up packages, remove unecessary
 # Install packages
 RUN apt install -y \
     apt-utils \
@@ -27,31 +28,6 @@ RUN apt install -y         \
     libcurl4-openssl-dev    \
     cmake
 
-# Ouster example
-# RUN apt-get update \
-#     && apt-get dist-upgrade -y \
-#     && apt-get install -y --no-install-recommends \
-#     git \
-#     build-essential \
-#     dialog \
-#     make \
-#     gcc \
-#     g++ \
-#     locales \
-#     wget \
-#     software-properties-common \
-#     sudo \
-#     libgl1-mesa-glx \
-#     libgl1-mesa-dri \
-#     libxau6 \
-#     libxdmcp6 \
-#     libxcb1 \
-#     libxext6 \
-#     libx11-6 \
-#     tmux \
-#     xdg-utils \
-#     eog
-
 # Install ROS packages
 RUN DEBIAN_FRONTEND=noninteractive apt install -y \
     # ros-${ROS_DISTRO}-cartographer \
@@ -68,8 +44,25 @@ RUN DEBIAN_FRONTEND=noninteractive apt install -y \
     ros-${ROS_DISTRO}-ros-control \
     ros-${ROS_DISTRO}-rqt-graph \
     ros-${ROS_DISTRO}-rqt-tf-tree \
-    ros-${ROS_DISTRO}-warthog-desktop \
-    ros-${ROS_DISTRO}-xacro   
+    # ros-${ROS_DISTRO}-warthog-desktop \
+    ros-${ROS_DISTRO}-xacro
+
+RUN DEBIAN_FRONTEND=noninteractive apt install -y \
+    ros-${ROS_DISTRO}-diff-drive-controller \
+    ros-${ROS_DISTRO}-robot-localization \
+    ros-${ROS_DISTRO}-joy \
+    ros-${ROS_DISTRO}-teleop-twist-joy \
+    ros-${ROS_DISTRO}-interactive-marker-twist-server \
+    ros-${ROS_DISTRO}-twist-mux
+
+RUN DEBIAN_FRONTEND=noninteractive apt install -y \
+    ros-${ROS_DISTRO}-joint-state-publisher \
+    ros-${ROS_DISTRO}-cpr-onav-description \
+    ros-${ROS_DISTRO}-robot-state-publisher \
+    ros-${ROS_DISTRO}-cpr-onav-description \
+    ros-${ROS_DISTRO}-rqt-robot-monitor \
+    ros-${ROS_DISTRO}-rqt-console \
+    ros-${ROS_DISTRO}-joint-state-publisher-gui 
 
 RUN rm -rf /var/lib/apt/lists/*
 

@@ -1,18 +1,8 @@
-Inside `warthog_ws`, make a `src` directory and clone these repositories below.
-```bash
-git clone https://github.com/warthog-cpr/warthog.git
-git clone https://github.com/warthog-cpr/warthog_simulator.git
-git clone https://github.com/warthog-cpr/warthog_desktop.git
-rosdep install --from-paths src --ignore-src --rosdistro=noetic -y
+Add this line at the end of `warthog_ws/src/clearpath/warthog/warthog_description/urdf/warthog.urdf.xacro` before `<robot>`. This adds the lidars to the URDF model.
+<xacro:include filename="$(find utexas_warthog_simulator)/urdf/ouster.urdf.xacro" />
 
-git clone https://github.com/wilselby/ouster_example
-git clone https://github.com/nicholaschan23/utexas_warthog_accessories
-git clone https://github.com/nicholaschan23/utexas_warthog_simulator 
-```
-
-Launch Gazebo.
+Launch the simulation with the alias:
 ```bash
-roslaunch warthog_gazebo warthog_world.launch
-roslaunch warthog_gazebo spawn_warthog.launch
+runsim
 ```
 

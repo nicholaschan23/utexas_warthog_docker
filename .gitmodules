@@ -1,0 +1,15 @@
+[submodule "warthog_ws/src/utexas_warthog_accessories"]
+	path = warthog_ws/src/utexas_warthog_accessories
+	url = https://github.com/nicholaschan23/utexas_warthog_accessories
+[submodule "warthog_ws/src/utexas_warthog_simulator"]
+	path = warthog_ws/src/utexas_warthog_simulator
+	url = https://github.com/nicholaschan23/utexas_warthog_simulator
+[submodule "warthog_ws/src/clearpath/warthog"]
+	path = warthog_ws/src/clearpath/warthog
+	url = https://github.com/warthog-cpr/warthog.git
+[submodule "warthog_ws/src/clearpath/warthog_desktop"]
+	path = warthog_ws/src/clearpath/warthog_desktop
+	url = https://github.com/warthog-cpr/warthog_desktop.git
+[submodule "warthog_ws/src/clearpath/warthog_simulator"]
+	path = warthog_ws/src/clearpath/warthog_simulator
+	url = https://github.com/warthog-cpr/warthog_simulator.git
